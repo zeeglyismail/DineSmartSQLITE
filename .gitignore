@@ -7,14 +7,6 @@ __pycache__/
 venv/
 .venv/
 
-# Django stuff:
-*.log
-*.pot
-*.pyc
-*.sqlite3
-db.sqlite3
-*.pyo
-
 
 # Static files and media
 /static/

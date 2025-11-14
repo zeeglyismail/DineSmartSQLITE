@@ -7,11 +7,10 @@ WORKDIR /app
 
 COPY requirements.txt .
 RUN pip install --upgrade pip \
- && pip install --prefix=/install -r requirements.txt
+    && pip install --prefix=/install -r requirements.txt
 
-FROM python:3.12-slim AS mainbackend
+FROM python:3.12-slim AS runtime
 
-# Create non-root user
 RUN adduser --disabled-password --gecos '' dinesmartuser
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -21,6 +20,9 @@ WORKDIR /app
 
 COPY --from=builder /install /usr/local
 COPY . .
+
+# db.sqlite3 is copied automatically since it's inside the backend folder
+# this includes ALL your data!
 
 USER dinesmartuser
 
