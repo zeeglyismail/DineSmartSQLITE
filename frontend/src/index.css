@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.org{
+    color: #FF6440;
+}
+
+.bgorg{
+    background-color: #FF6440;
+}
+
+.family{
+font-family: "lato font";
+}
+
+
+.slick-dots li button:before {
+  font-size: 10px !important;  /* Increase dot size */
+  line-height: 20px !important;
+  color: #333 !important; 
+  opacity: 1 !important;       /* Make sure it's visible */
+}
+
+.slick-dots li.slick-active button:before {
+  color: #FF6440 !important;  /* color for active dot */
+  opacity: 1 !important;
+}
+
+
+.slick-dots {
+  top: 260px;  /* move above the slider */
+  bottom: auto; 
+}
+
+
+
+
+
+
+
+
+
