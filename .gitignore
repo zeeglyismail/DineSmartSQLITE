@@ -7,13 +7,6 @@ __pycache__/
 venv/
 .venv/
 
-
-# Static files and media
-/static/
-/media/
-/staticfiles/
-/mediafiles/
-
 # Ignore local development settings
 /local_settings.py
 
