@@ -21,8 +21,9 @@ WORKDIR /app
 COPY --from=builder /install /usr/local
 COPY . .
 
-# db.sqlite3 is copied automatically since it's inside the backend folder
-# this includes ALL your data!
+# FIX: give sqlite write permission
+RUN chown -R dinesmartuser:dinesmartuser /app
+RUN chmod -R 775 /app
 
 USER dinesmartuser
 
