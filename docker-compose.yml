@@ -1,0 +1,60 @@
+services:
+  db:
+    image: postgres:16
+    container_name: dinesmart-postgres-db
+    restart: on-failure
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - dinesmart-net
+    ports:
+      - "5432:5432"
+
+  backend:
+    build:
+      context: ./backend
+    container_name: dinesmart-backend
+    restart: on-failure
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py shell < create_superuser.py &&
+             python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    environment:
+      DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL}
+      DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
+      EMAIL_HOST_USER: ${EMAIL_HOST_USER}
+      EMAIL_HOST_PASSWORD: ${EMAIL_HOST_PASSWORD}
+      SECRET_KEY: ${SECRET_KEY}
+      DEBUG: ${DEBUG}
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+    depends_on:
+      - db
+    networks:
+      - dinesmart-net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: dinesmart-frontend
+    restart: on-failure
+    ports:
+      - "3000:80"
+    environment:
+      VITE_BACKEND_BASE_API: ${VITE_BACKEND_BASE_API}
+    depends_on:
+      - backend
+    networks:
+      - dinesmart-net
+
+
+volumes:
+  postgres_data:
+networks:
+  dinesmart-net:
